@@ -39,6 +39,9 @@
         <div class='container'>
             <form>
                 <div class="mb-3">
+                    <label class="form-label">Inscription</label>
+                </div>
+                <div class="mb-3">
                     <label class="form-label">Prénom</label>
                     <input  class="form-control" name="prenom">
                 </div>
