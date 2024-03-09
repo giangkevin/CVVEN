@@ -62,7 +62,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Adresse mail</label>
-                    <input type="email" class="form-control" email="mail"value="<?= old('email') ?>">
+                    <input type="email" class="form-control" name="email" value="<?= old('email') ?>">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Mot de passe</label>
