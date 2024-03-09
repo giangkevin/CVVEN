@@ -4,8 +4,43 @@ namespace App\Controllers;
 
 class Auth extends BaseController
 {
-    public function login(): string
+    public function login()
     {
+        $method = $this->request->getMethod('true');
+        
+        if($method === "POST"){
+            $data = $this->request->getPost();
+            
+            $userModel = new \App\Models\Users();
+            $rules =[
+                'email' => 'required|valid_email',
+                'password' => 'required|min_length[8]',
+                
+            ];
+            
+            if(!$this->validate($rules)){
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            }
+            
+            $user = $userModel->where('email', $data['email'])->first();
+            
+            if(!$user){
+                return redirect()->back()->withInput()->with('errors',['email' => 'L\'email saisi n\'existe pas']);
+            }
+           
+            
+            if (!password_verify($data['password'], $user->password)) {
+                return redirect()->back()->withInput()->with('errors', ['password' => 'Le mot de passe ne correspond pas']);
+            }
+
+            session()->set('user',[
+                'id'=>$user->id,
+                'last_name'=>$user->last_name,
+                'first_name'=>$user->first_name,
+                'email'=>$user->email,
+            ]);
+            dd("Bonjour" . session()->get('user')['last_name']);
+        }
         return view('auth/login');
     }
     
