@@ -27,6 +27,16 @@ class Auth extends BaseController
                 session()->setFlashdata('errors', $this->validator->getErrors());
                 return redirect()->back()->withInput();
             }
+            
+            $data['password'] = password_hash($data['password'],PASSWORD_BCRYPT);
+            
+            $userModel = new \App\Models\Users();
+            
+            if(!$userModel->save($data)){
+                session()->setFlashdata('errors', $userModel->errors());
+                return redirect()->back()->withInput();
+            }
+            return redirect()->to(base_url('auth/login'));
         }
         return view('auth/register');
     }
