@@ -37,21 +37,32 @@
     </head>
     <body>
         <div class='container'>
-            <form>
+            <form method="post">
                 <div class="mb-3">
                     <label class="form-label">Inscription</label>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Prénom</label>
-                    <input  class="form-control" name="prenom">
-                </div>
+                
+                <?php $errors = session()->getFlashdata('errors');?>
+                <?php if($errors) :?>
+                    <div class="alert alert-danger" role="alert">
+                        <ul>
+                            <?php foreach ($errors as $error) : ?>
+                                <li><?= esc($error) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
                 <div class="mb-3">
                     <label class="form-label">Nom</label>
-                    <input  class="form-control" name="nom">
+                    <input  class="form-control" name="last_name" value="<?= old('last_name') ?>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Prénom</label>
+                    <input  class="form-control" name="first_name" value="<?= old('first_name') ?>">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Adresse mail</label>
-                    <input type="email" class="form-control" email="mail">
+                    <input type="email" class="form-control" email="mail"value="<?= old('email') ?>">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Mot de passe</label>

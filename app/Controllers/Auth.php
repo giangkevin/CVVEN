@@ -9,7 +9,25 @@ class Auth extends BaseController
         return view('auth/login');
     }
     
-    public function register(): string{
+    public function register(){
+        
+        $method = $this->request->getMethod('true');
+        if($method === "POST"){
+            $data = $this->request->getPost();
+            $rules =[
+                'last_name' => 'required|max_length[255]|min_length[3]',
+                'first_name' => 'required|max_length[255]|min_length[3]',
+                'email' => 'required|valid_email|is_unique[users.email]',
+                'password' =>'required|min_length[8]',
+                'passwordConfirm' =>'required|matches[password]'
+            ];
+            
+            //Si les regles ne sont pas appliquées on retourne les erreurs de l'utilisateur
+            if(!$this->validate($rules)){
+                session()->setFlashdata('errors', $this->validator->getErrors());
+                return redirect()->back()->withInput();
+            }
+        }
         return view('auth/register');
     }
 }
