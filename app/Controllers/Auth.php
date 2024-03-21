@@ -28,8 +28,8 @@ class Auth extends BaseController
                 return redirect()->back()->withInput()->with('errors',['email' => 'L\'email saisi n\'existe pas']);
             }
            
-            
-            if (!password_verify($data['password'], $user->password)) {
+            $passwordCheck = password_verify($data['password'], $user->password);
+            if (!$passwordCheck) {
                 return redirect()->back()->withInput()->with('errors', ['password' => 'Le mot de passe ne correspond pas']);
             }
 
@@ -39,7 +39,7 @@ class Auth extends BaseController
                 'first_name'=>$user->first_name,
                 'email'=>$user->email,
             ]);
-            dd("Bonjour" . session()->get('user')['last_name']);
+            return redirect()->to(base_url('users/profil'));
         }
         return view('auth/login');
     }
@@ -74,6 +74,12 @@ class Auth extends BaseController
             return redirect()->to(base_url('auth/login'));
         }
         return view('auth/register');
+    }
+    
+    public function logout(){
+        $this->session->destroy();
+        return redirect()->to(base_url('auth/login'));
+        
     }
 }
 
